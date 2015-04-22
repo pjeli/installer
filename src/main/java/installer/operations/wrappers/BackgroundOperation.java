@@ -1,6 +1,6 @@
-package installer.commands.wrappers;
+package installer.operations.wrappers;
 
-import installer.commands.Operation;
+import installer.operations.Operation;
 
 public class BackgroundOperation implements Operation {
     Operation op;
@@ -11,18 +11,11 @@ public class BackgroundOperation implements Operation {
         this.isFinished = false;
     }
 
-    @Override
-    public void revert() throws Exception {
-        op.revert();
-    }
-
-    @Override
-    public void apply() throws Exception {
+    public void execute() throws Exception {
         Runnable runnable = new Runnable() {
-            @Override
             public void run() {
                 try {
-                    op.apply();
+                    op.execute();
                     isFinished = true;
                 } catch (Exception e) {
                     throw new RuntimeException(e);

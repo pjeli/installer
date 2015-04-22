@@ -1,6 +1,6 @@
-package installer.commands.wrappers;
+package installer.operations.wrappers;
 
-import installer.commands.Operation;
+import installer.operations.Operation;
 
 import java.util.concurrent.TimeoutException;
 
@@ -13,16 +13,10 @@ public class TimedOperation implements Operation {
         this.milliSecsAllowed = milliSecsAllowed;
     }
 
-    @Override
-    public void revert() throws Exception {
-        op.revert();
-    }
-
-    @Override
-    public void apply() throws Exception {
+    public void execute() throws Exception {
         long currentTime = System.currentTimeMillis();
         BackgroundOperation backgroundOperation = new BackgroundOperation(op);
-        backgroundOperation.apply();
+        backgroundOperation.execute();
         while(!backgroundOperation.isFinished) {
             if(System.currentTimeMillis() > currentTime + milliSecsAllowed) {
                 throw new TimeoutException();
