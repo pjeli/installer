@@ -4,7 +4,7 @@ import installer.operations.Operation;
 
 public class BackgroundOperation implements Operation {
     Operation op;
-    boolean isFinished;
+    volatile boolean isFinished;
 
     public BackgroundOperation(Operation op) {
         this.op = op;
@@ -24,5 +24,9 @@ public class BackgroundOperation implements Operation {
         };
         Thread thread = new Thread(runnable);
         thread.start();
+    }
+
+    public boolean isFinished() {
+      return isFinished;
     }
 }

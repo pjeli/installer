@@ -18,14 +18,13 @@ public class ShellOperation implements Operation {
 
     @Override
     public void execute() throws Exception {
-        ProcessBuilder pb = new ProcessBuilder(command.getCommand());
-        Process start = pb.start();
-        this.exitValue = start.exitValue();
+        Process start = Runtime.getRuntime().exec(command.getCommand());
+        this.exitValue = start.waitFor();
         BufferedReader read = new BufferedReader(new InputStreamReader(
             start.getInputStream()));
         List<String> outputs = new ArrayList<String>();
-        while(read.ready()) {
-            String output = read.readLine();
+        String output;
+        while((output = read.readLine()) != null) {
             outputs.add(output);
         }
         this.outputs = outputs.toArray(new String[outputs.size()]);
