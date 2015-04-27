@@ -11,6 +11,7 @@ public class ShellOperation implements Operation {
     Command command;
     int exitValue;
     String[] outputs;
+    String[] errors;
 
     public ShellOperation(Command command) {
         this.command = command;
@@ -22,12 +23,19 @@ public class ShellOperation implements Operation {
         this.exitValue = start.waitFor();
         BufferedReader read = new BufferedReader(new InputStreamReader(
             start.getInputStream()));
+        BufferedReader read2 = new BufferedReader(new InputStreamReader(
+            start.getErrorStream()));
         List<String> outputs = new ArrayList<String>();
+        List<String> errors = new ArrayList<String>();
         String output;
         while((output = read.readLine()) != null) {
             outputs.add(output);
         }
         this.outputs = outputs.toArray(new String[outputs.size()]);
+        while((output = read2.readLine()) != null) {
+          errors.add(output);
+        }
+        this.errors = errors.toArray(new String[errors.size()]);
     }
 
     public int getExitValue() {
@@ -36,5 +44,9 @@ public class ShellOperation implements Operation {
 
     public String[] getOutput() {
         return outputs;
+    }
+
+    public String[] getError() {
+        return errors;
     }
 }
