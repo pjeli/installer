@@ -13,7 +13,6 @@ public class ChownFile implements Command {
         this.group = group;
     }
 
-    @Override
     public String getCommand() {
         return "chown " + user + ":" + group + " " + file;
     }

@@ -11,7 +11,6 @@ public class CopyFile implements Command {
         this.dst = dst;
     }
 
-    @Override
     public String getCommand() {
         return "cp " + src + " " + dst;
     }

@@ -9,7 +9,6 @@ public class GetOwnerOfFile implements Command {
         this.file = file;
     }
 
-    @Override
     public String getCommand() {
         return "stat -c '%U' " + file;
     }

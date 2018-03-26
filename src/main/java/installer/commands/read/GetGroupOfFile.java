@@ -9,7 +9,6 @@ public class GetGroupOfFile implements Command {
         this.file = file;
     }
 
-    @Override
     public String getCommand() {
         return "stat -c '%G' " + file;
     }

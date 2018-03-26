@@ -12,6 +12,6 @@ package installer.transactions;
  * appears as if nothing happened.
  */
 public interface Transaction {
-    public void apply() throws Exception;
-    public void revert() throws Exception;
+    void apply() throws Exception;
+    void revert() throws Exception;
 }

@@ -8,9 +8,9 @@ public interface Installer {
      * be performed after all the other added ones.
      * @param operation the operation to perform next
      */
-    public void addOperation(Operation operation);
+    void addOperation(Operation operation);
 
-    public void run();
+    void run();
 
-    public void undo();
+    void undo();
 }

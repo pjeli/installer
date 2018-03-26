@@ -19,7 +19,6 @@ public class ShellChown implements Transaction {
         this.group = group;
     }
 
-    @Override
     public void apply() throws Exception {
         ShellOperation getOwnerOp = new ShellOperation(
             new GetOwnerOfFile(file));
@@ -34,7 +33,6 @@ public class ShellChown implements Transaction {
         shellOperation.execute();
     }
 
-    @Override
     public void revert() throws Exception {
         ShellOperation shellOperation = new ShellOperation(
             new ChownFile(file, originalUser, originalGroup));
