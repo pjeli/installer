@@ -47,4 +47,16 @@ public class ShellChown implements Transaction {
             new ChownFile(file, originalUser, originalGroup));
         shellOperation.execute();
     }
+
+    @Override
+    public String toString() {
+        return "ShellChown{" +
+            "sudo='" + sudo + '\'' +
+            ", file='" + file + '\'' +
+            ", user='" + user + '\'' +
+            ", group='" + group + '\'' +
+            ", originalUser='" + originalUser + '\'' +
+            ", originalGroup='" + originalGroup + '\'' +
+            '}';
+    }
 }

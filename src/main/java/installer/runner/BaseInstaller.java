@@ -4,12 +4,14 @@ import installer.exceptions.FatalInstallerException;
 import installer.transactions.Transaction;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BaseInstaller implements Installer {
   private List<Transaction> list = new ArrayList<Transaction>();
   private boolean success = false;
   private boolean partialState = false;
+  private int transactionsProcessed = 0;
   private Exception applyEx;
   private Exception revertEx;
 
@@ -18,7 +20,6 @@ public class BaseInstaller implements Installer {
   }
 
   public void run() throws Exception {
-    int txId = 0;
     for(Transaction toApply : list) {
       try {
         toApply.apply();
@@ -33,7 +34,7 @@ public class BaseInstaller implements Installer {
         }
         break;
       }
-      txId++;
+      transactionsProcessed++;
     }
 
     if(applyEx == null && revertEx == null) {
@@ -41,8 +42,8 @@ public class BaseInstaller implements Installer {
       return;
     }
 
-    for(; txId > 0; txId--) {
-      Transaction toRevert = list.get(txId);
+    for(int backwards = transactionsProcessed; backwards > 0; backwards--) {
+      Transaction toRevert = list.get(backwards);
       try {
         toRevert.revert();
       } catch (Exception revertEx) {
@@ -74,5 +75,13 @@ public class BaseInstaller implements Installer {
 
   public Exception getRevertEx() {
     return revertEx;
+  }
+  
+  public List<Transaction> getSuccessfulTransactions() {
+    return Collections.unmodifiableList(list.subList(0, transactionsProcessed));
+  }
+  
+  public List<Transaction> getFailedTransactions() {
+    return Collections.unmodifiableList(list.subList(transactionsProcessed, list.size()));
   }
 }

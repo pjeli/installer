@@ -34,4 +34,14 @@ public class ShellChmod implements Transaction {
         ShellOperation op = new SudoShellOperation(sudo, new ChmodFile(originalMode, file));
         op.execute();
     }
+
+    @Override
+    public String toString() {
+        return "ShellChmod{" +
+            "sudo='" + sudo + '\'' +
+            ", file='" + file + '\'' +
+            ", mode='" + mode + '\'' +
+            ", originalMode='" + originalMode + '\'' +
+            '}';
+    }
 }

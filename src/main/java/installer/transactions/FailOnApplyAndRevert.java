@@ -7,4 +7,7 @@ public class FailOnApplyAndRevert implements Transaction {
   public void revert() throws Exception {
     throw new Exception("FailOnApplyAndRevert");
   }
+  public String toString() {
+    return "FailOnApplyAndRevert{}";
+  }
 }

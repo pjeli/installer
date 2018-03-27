@@ -5,4 +5,7 @@ public class FailOnApply implements Transaction {
     throw new Exception("FailOnApply");
   }
   public void revert() throws Exception {}
+  public String toString() {
+    return "FailOnApply{}";
+  }
 }
