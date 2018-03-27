@@ -1,16 +1,20 @@
 package installer.runner;
 
-import installer.operations.Operation;
+import installer.transactions.Transaction;
 
 public interface Installer {
     /**
-     * Appends an operation to the installer. This added operation will
-     * be performed after all the other added ones.
-     * @param operation the operation to perform next
+     * Appends a transaction to the installer. This added transaction will
+     * be performed after all the other added ones. FIFO order.
+     * @param transaction the transaction to perform next
      */
-    void addOperation(Operation operation);
+    void addOperation(Transaction transaction);
 
-    void run();
+    void run() throws Exception;
 
-    void undo();
+    boolean wasSuccessful();
+
+    boolean wasFailure();
+
+    boolean finishedWithPartialState();
 }

@@ -1,40 +1,49 @@
 package installer.transactions;
 
+import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 import installer.commands.read.GetGroupOfFile;
 import installer.commands.read.GetOwnerOfFile;
 import installer.commands.write.ChownFile;
 import installer.operations.ShellOperation;
+import installer.operations.SudoShellOperation;
 
 public class ShellChown implements Transaction {
-    String file;
-    String user;
-    String group;
+    
+    private final String sudo;
+    private final String file;
+    private final String user;
+    private final String group;
 
-    String originalUser;
-    String originalGroup;
+    private String originalUser;
+    private String originalGroup;
 
-    public ShellChown(String file, String user, String group) {
+    public ShellChown(@NotNull String file, 
+                      @NotNull String user, 
+                      @NotNull String group,
+                      @NotNull String sudo) {
         this.file = file;
         this.user = user;
         this.group = group;
+        this.sudo = sudo; // Sudo required here in order to revert properly.
     }
 
     public void apply() throws Exception {
-        ShellOperation getOwnerOp = new ShellOperation(
+        ShellOperation getOwnerOp = new SudoShellOperation(sudo,
             new GetOwnerOfFile(file));
         getOwnerOp.execute();
         originalUser = getOwnerOp.getError()[0];
         ShellOperation getGroupOp =
-            new ShellOperation(new GetGroupOfFile(file));
+            new SudoShellOperation(sudo, new GetGroupOfFile(file));
         getGroupOp.execute();
         originalGroup = getGroupOp.getError()[0];
         ShellOperation shellOperation =
-            new ShellOperation(new ChownFile(file, user, group));
+            new SudoShellOperation(sudo, new ChownFile(file, user, group));
         shellOperation.execute();
     }
 
     public void revert() throws Exception {
-        ShellOperation shellOperation = new ShellOperation(
+        ShellOperation shellOperation = new SudoShellOperation(sudo,
             new ChownFile(file, originalUser, originalGroup));
         shellOperation.execute();
     }

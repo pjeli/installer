@@ -12,6 +12,10 @@ public class Sudo implements Command {
   }
   
   public String getCommand() {
-    return "sudo -u " + user + " " + command.getCommand();
+    if(user != null) {
+      return "sudo -u " + user + " " + command.getCommand();
+    } else {
+      return command.getCommand();
+    }
   }
 }
