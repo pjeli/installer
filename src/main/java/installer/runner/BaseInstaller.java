@@ -19,7 +19,6 @@ public class BaseInstaller implements Installer {
 
   public void run() throws Exception {
     int txId = 0;
-    FatalInstallerException ex = null;
     for(Transaction toApply : list) {
       try {
         toApply.apply();
